@@ -7,6 +7,51 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Cambios realizados
+
+### 1. Configuración de idioma
+
+- Se instaló el paquete de localización `laravel-lang/common` mediante Composer.
+- Se agregó el idioma español al sistema de traducciones de Laravel.
+- Se estableció el idioma predeterminado (`locale`) en español (`es`) en el archivo `.env` y en `config/app.php`.
+- Ahora todos los textos y mensajes del sistema aparecen en español.
+
+**Cómo verificarlo:**  
+Iniciar la aplicación y observar que los formularios y mensajes de error se muestran en español.
+
+### 2. Configuración de zona horaria
+
+- Se ajustó el parámetro `timezone` en el archivo `config/app.php` a `America/Merida` (o la zona correspondiente).
+- Esto permitirá que los registros y fechas/timestamps se almacenen con la hora local de México Sureste.
+
+**Cómo verificarlo:**  
+Registrar un usuario o un evento y comprobar en la base de datos que la fecha/hora corresponde a la zona horaria configurada.
+
+### 3. Integración de MySQL
+
+- Se configuró la conexión a MySQL en el archivo `.env`:
+  - `DB_CONNECTION=mysql`
+  - `DB_HOST=127.0.0.1`
+  - `DB_PORT=3306`
+  - `DB_DATABASE=appointment_db_4b` (o el nombre de tu base de datos)
+  - `DB_USERNAME=usuario` (el usuario configurado en MySQL)
+  - `DB_PASSWORD=contraseña` (la contraseña correspondiente)
+- Se realizó la migración de las tablas con `php artisan migrate`.
+
+**Cómo verificarlo:**  
+Acceder a tu gestor de base de datos (phpMyAdmin, DBeaver, etc.) y comprobar que existen las tablas de Laravel.
+
+### 4. Carga de foto de perfil
+
+- Se habilitó la funcionalidad de cargar foto de perfil para los usuarios (Jetstream).
+- Se configuró el almacenamiento en el disco `public` mediante el parámetro `FILESYSTEM_DISK=public` en `.env`.
+- Ahora puedes subir tu foto de perfil desde el panel de usuario.
+
+**Cómo verificarlo:**  
+Ingresar como usuario, ir a la sección de perfil y cargar una foto. Debe visualizarse tu imagen y almacenarse en `storage/app/public`.
+
+---
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
