@@ -51,7 +51,89 @@ Acceder a tu gestor de base de datos (phpMyAdmin, DBeaver, etc.) y comprobar que
 Ingresar como usuario, ir a la sección de perfil y cargar una foto. Debe visualizarse tu imagen y almacenarse en `storage/app/public`.
 
 ---
+# Actividad 4 - Panel administrativo con Flowbite
 
+Este proyecto implementa un panel administrativo en Laravel utilizando Blade y la librería de componentes **Flowbite**.  
+La actividad corresponde a la Unidad 1 y busca que el estudiante comprenda la importancia de los layouts y slots en la organización de vistas.
+
+---
+
+## Pasos realizados
+
+### 1. Creación del nuevo layout
+1. Generé el componente con Artisan:
+   ```bash
+   php artisan make:component AdminLayout
+Moví el archivo generado a resources/views/layouts/admin.blade.php.
+
+Configuré la ruta admin.dashboard en routes/web.php:
+
+```php
+Route::get('/admin', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');
+```
+Creé la vista resources/views/admin/dashboard.blade.php con el siguiente contenido de prueba:
+
+```blade
+<x-admin-layout>
+    Hola desde admin
+</x-admin-layout>
+```
+### 2. Integración de Flowbite
+Instalé Flowbite con npm:
+
+```bash
+npm install flowbite
+```
+Agregué la configuración en tailwind.config.js:
+
+```js
+module.exports = {
+  content: [
+    "./resources/**/*.blade.php",
+    "./resources/**/*.js",
+    "./node_modules/flowbite/**/*.js"
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [
+    require('flowbite/plugin')
+  ],
+}
+```
+Ejecuté la compilación:
+
+```bash
+npm run build
+```
+Copié el ejemplo de Sidebar with Navbar desde la documentación de Flowbite y lo adapté en admin.blade.php.
+
+### 3. Separación de código con includes
+Creé dos archivos en resources/views/includes/:
+
+navigation.blade.php → código del navbar.
+
+sidebar.blade.php → código del sidebar.
+
+En el layout (admin.blade.php), los integré con:
+
+```blade
+
+@include('includes.navigation')
+@include('includes.sidebar')
+```
+### 4. Prueba de slots e información dinámica
+En dashboard.blade.php probé el uso de {{$slot}} con el texto:
+
+```blade
+<x-admin-layout>
+    Hola desde admin
+</x-admin-layout>
+```
+Confirmé que el contenido se mostrara correctamente en el layout.
+Incorporé la información de usuario en el navbar para el dropdown de perfil.
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
