@@ -1,3 +1,4 @@
+@props(['breadcrumbs' => []])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -14,6 +15,10 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://kit.fontawesome.com/a7de8752fc.js" crossorigin="anonymous"></script>
+
+        <wireui:scripts />
+        {{-- Livewire Scripts --}}
+        @livewireScripts
 
         <!-- Styles -->
         @livewireStyles
@@ -34,7 +39,5 @@
         <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
         {{-- WireUI Scripts --}}
-        <wireui:scripts />
-        {{-- Livewire Scripts --}}
-        @livewireScripts
+
     </body>
