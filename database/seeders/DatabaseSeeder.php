@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +12,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 1. Llama a tu RoleSeeder (el que acabas de mostrar)
+        $this->call([
+            RoleSeeder::class
+        ]);
 
+        // 2. Crea tu usuario de prueba
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Juan Perez',
+            'email' => 'admin@admin.admin',
+            'password'=> bcrypt('12345678'),
         ]);
     }
 }

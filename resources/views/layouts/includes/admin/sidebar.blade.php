@@ -8,34 +8,17 @@ $links= [
       'active' => request()->routeIs('admin.dashboard'),
    ],
    [  
-      'header' => 'Hospital',
+      'header' => 'Gestion de Roles',
    ],
-   [
-      'name' => 'Dashboard',
-      'icon' => 'fa-solid fa-gauge',
-      'href' => route('admin.dashboard'),
-      'active' => false,
-      'submenu' => [
-         [
-            'name' => 'Products',
-            'href' => '#',
-            'active' => false,
-         ],
-         [
-            'name' => 'Billing',
-            'href' => '#',
-            'active' => false,
-         ],
-         [
-            'name' => 'Invoice',
-            'href' => '#',
-            'active' => false,
-         ],
-      ],
+      [
+      'name' => 'Roles y Permisos',
+      'icon' => 'fa-solid fa-shield-halved',
+      'href' => route('admin.roles.index'),
+      'active' => request()->routeIs('admin.roles.*'),
    ],
 ];
 @endphp
- 
+
 <aside id="logo-sidebar"
    class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
    aria-label="Sidebar">
