@@ -12,7 +12,14 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        $breadcrumbs = [
+            ['name' => 'Dashboard', 'href' => route('admin.dashboard')],
+            ['name' => 'Roles']
+        ];
+
+        return view('admin.roles.index', compact(
+            'breadcrumbs'
+        ));
     }
 
     /**

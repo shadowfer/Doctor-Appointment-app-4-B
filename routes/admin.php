@@ -7,4 +7,4 @@ Route::get('/', function () {
 })->name('dashboard');
 
 //Gestio de roles
-Route::resource('roles', App\Http\Controllers\Admin\RoleController::class)->names('admin.roles');
+Route::resource('roles', App\Http\Controllers\Admin\RoleController::class)->names('admin.roles');   
