@@ -19,6 +19,8 @@ export default {
         './vendor/wireui/wireui/src/Components/*/.php',
 
         './vendor/rappasoft/laravel-livewire-tables/resources/views/*/.blade.php',
+        './vendor/rappasoft/laravel-livewire-tables/src/*/.php',
+        '/node_modules/flowbite/**/*.js',
     ],
 
     theme: {

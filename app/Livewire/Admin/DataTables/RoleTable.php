@@ -21,10 +21,21 @@ class RoleTable extends DataTableComponent
             Column::make("Id", "id")
                 ->sortable(),
             Column::make("Name", "name")
-                ->sortable(),
+                ->sortable()
+                ->searchable(), // Añadido para buscar
+
+            // --- INICIO DE LA MODIFICACIÓN (ADA 1) ---
+            
+            // 1. Nueva columna "Acciones"
+            Column::make("Acciones")
+                ->label(
+                    // 2. Carga la vista 'actions.blade.php' por cada fila ($row)
+                    fn($row) => view('admin.roles.actions', ['role' => $row])
+                ),
+            
+            // --- FIN DE LA MODIFICACIÓN ---
+
             Column::make("Created at", "created_at")
-                ->sortable(),
-            Column::make("Updated at", "updated_at")
                 ->sortable(),
         ];
     }
