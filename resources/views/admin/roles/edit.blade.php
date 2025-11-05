@@ -1,5 +1,5 @@
 <x-admin-layout 
-    title="Roles | MediMatch"
+    title="Roles | MediLink"
     :breadcrumbs="[
         [
             'name' => 'Dashboard',
