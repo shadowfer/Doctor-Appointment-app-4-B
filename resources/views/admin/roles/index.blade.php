@@ -1,30 +1,21 @@
-<x-admin-layout
+<x-admin-layout 
     title="Roles | MediLink"
     :breadcrumbs="[
-        ['name' => 'Dashboard', 
-         'route' => route('admin.dashboard')
-    ],
+        [
+            'name' => 'Dashboard',
+            'href' => route('admin.dashboard'),
+        ],
         [
             'name' => 'Roles',
         ],
     ]">
 
-    {{-- --- INICIO DE LA MODIFICACIÓN (ADA 1) --- --}}
-    {{-- Slot para el botón "Nuevo" --}}
-    @slot('action')
-        <x-wire-button
-            color="blue"
-            href="{{ route('admin.roles.create') }}"
-        >
-            <i class="fa-solid fa-plus mr-1"></i>
+    <x-slot name="action">
+        <x-wire-button blue href="{{ route('admin.roles.create') }}">
+            <i class="fa-solid fa-plus"></i>
             Nuevo
         </x-wire-button>
-    @endslot
-    {{-- --- FIN DE LA MODIFICACIÓN --- --}}
+    </x-slot>
 
-
-    {{-- Esta línea ya la tenías correcta --}}
-    @livewire('admin.data-tables.role-table')
-
+    @livewire('admin.datatables.role-table')
 </x-admin-layout>
-

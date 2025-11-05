@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Admin\DataTables;
 
-use Rappasoft\LaravelLivewireTables\Views\Column;
-use Spatie\Permission\Models\Role;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use App\Models\Role;
 
 class RoleTable extends DataTableComponent
 {
@@ -20,23 +20,19 @@ class RoleTable extends DataTableComponent
         return [
             Column::make("Id", "id")
                 ->sortable(),
-            Column::make("Name", "name")
+            Column::make("Nombre", "name")
                 ->sortable()
-                ->searchable(), // Añadido para buscar
-
-            // --- INICIO DE LA MODIFICACIÓN (ADA 1) ---
-            
-            // 1. Nueva columna "Acciones"
+                ->searchable(),
+            Column::make("Fecha", "created_at")
+                ->sortable()
+                ->format(function($value){
+                    return $value->format('d/m/Y');
+                }),
             Column::make("Acciones")
-                ->label(
-                    // 2. Carga la vista 'actions.blade.php' por cada fila ($row)
-                    fn($row) => view('admin.roles.actions', ['role' => $row])
-                ),
-            
-            // --- FIN DE LA MODIFICACIÓN ---
-
-            Column::make("Created at", "created_at")
-                ->sortable(),
+                ->label(function($row){
+                    return view('admin.roles.actions',
+                    ['role' => $row]);
+                })
         ];
     }
 }

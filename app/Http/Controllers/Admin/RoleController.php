@@ -12,14 +12,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $breadcrumbs = [
-            ['name' => 'Dashboard', 'href' => route('admin.dashboard')],
-            ['name' => 'Roles']
-        ];
-
-        return view('admin.roles.index', compact(
-            'breadcrumbs'
-        ));
+        return view('admin.roles.index');
     }
 
     /**
@@ -27,7 +20,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.roles.create');
     }
 
     /**
@@ -51,8 +44,9 @@ class RoleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('admin.roles.edit');
     }
+
 
     /**
      * Update the specified resource in storage.
