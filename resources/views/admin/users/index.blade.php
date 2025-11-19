@@ -15,5 +15,9 @@
             <i class="fa-solid fa-plus"></i>
             Nuevo
         </x-wire-button>
+
     </x-slot>
+
+    @livewire('admin.datatables.user-table')
+
 </x-admin-layout>
