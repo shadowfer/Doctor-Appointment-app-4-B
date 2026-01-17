@@ -7,6 +7,8 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+
+
 class UserController extends Controller
 {
     /**
@@ -60,7 +62,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('admin.users.edit', compact('user'));
+        $roles = Role::all();
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -68,9 +71,35 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        // Funcionalidad pendiente
-    }
+        $data = $request->validate([
+            'name' => 'required|string|min:3|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'id_number' => 'required|string|min:5|max:20|regex:/^[A-Za-z0-9]+$/|unique:users,id_number,' . $user->id,
+            'phone' => 'required|digits_between:7,15',
+            'phone' => 'required|digits_between:7,15',
+            'address' => 'required|string|min:3|max:255',
+            'role_id' => 'required|exists:roles,id',
+        ]);
 
+        $user->update($data);
+        
+        //Di el usuario quiere editar su contraseña
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+            $user->save();
+        }
+
+        $user->roles()->sync($data['role_id']);
+
+        session()->flash('swal', [
+            'icon' => 'success',
+            'title' => 'Usuario actualizado',
+            'text' => 'El usuario ha sido actualizado correctamente.',
+        ]);
+
+        return redirect()->route('admin.users.edit', $user->id)->with('success', 'Usuario actualizado correctamente.')       
+    ;
+    }
     /**
      * Remove the specified resource from storage.
      */
