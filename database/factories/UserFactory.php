@@ -40,6 +40,7 @@ class UserFactory extends Factory
             'id_number' => strtoupper(fake()->bothify('ID-########?#')),
             'phone' => fake()->numerify('99999999999'),
             'address' => fake()->streetAddress(),
+
         ];
     }
 
