@@ -14,8 +14,10 @@ class DatabaseSeeder extends Seeder
     {
         // 1. Llama a tu RoleSeeder (el que acabas de mostrar)
         $this->call([
+            BloodTypeSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
+            
         ]);
     }
 }
