@@ -34,7 +34,7 @@ class PatientTable extends DataTableComponent
                 ->sortable(),
             Column::make("Email", "user.email")
                 ->sortable(),
-            Column::make("Phone", "user.phone")
+            Column::make("Telefono", "user.phone")
                 ->sortable(),
             Column::make("Numero de id", "user.id_number")
                 ->sortable(),
