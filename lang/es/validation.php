@@ -293,7 +293,8 @@ return [
         'blood_type_id'           => 'tipo de sangre',
         'chronic_diseases'         => 'enfermedades crónicas',
         'family_history'          => 'antecedentes familiares',
-
+        'medical_license_number'  => 'número de licencia médica',
+        'biography'               => 'biografía',
 
     ],
 ];
