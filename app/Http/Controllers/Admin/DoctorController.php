@@ -79,4 +79,64 @@ class DoctorController extends Controller
     {
         //
     }
+
+    /**
+     * Gestión de horarios desde dentro del controlador de Doctor requerido académicamente
+     */
+    public function schedules(Doctor $doctor)
+    {
+        $days = [
+            1 => 'Lunes',
+            2 => 'Martes',
+            3 => 'Miércoles',
+            4 => 'Jueves',
+            5 => 'Viernes',
+            6 => 'Sábado',
+            0 => 'Domingo',
+        ];
+
+        $schedules = $doctor->schedules()->get();
+
+        return view('admin.doctors.schedules', compact('doctor', 'days', 'schedules'));
+    }
+
+    public function updateSchedules(Request $request, Doctor $doctor)
+    {
+        $request->validate([
+            'schedules' => 'nullable|array',
+        ]);
+
+        \DB::beginTransaction();
+        try {
+            // Eliminar horarios anteriores
+            $doctor->schedules()->delete();
+
+            $schedulesInput = $request->input('schedules', []);
+
+            foreach ($schedulesInput as $idx => $data) {
+                // Solo procesamos si el checkbox envió el day_of_week (los hidden están sincronizados)
+                if (isset($data['day_of_week'], $data['start_time'], $data['end_time'])) {
+                    $doctor->schedules()->create([
+                        'day_of_week' => $data['day_of_week'],
+                        'start_time' => $data['start_time'],
+                        'end_time' => $data['end_time'],
+                        'is_available' => true,
+                    ]);
+                }
+            }
+
+            \DB::commit();
+
+            session()->flash('swal', [
+                'icon' => 'success',
+                'title' => 'Horarios actualizados',
+                'text' => 'La disponibilidad del doctor ha sido guardada correctamente.',
+            ]);
+
+            return redirect()->route('admin.doctors.index');
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            return back()->with('error', 'Ocurrió un error guardando los horarios: ' . $e->getMessage());
+        }
+    }
 }

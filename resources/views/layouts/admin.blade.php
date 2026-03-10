@@ -48,13 +48,34 @@
         @livewireScripts
         <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
-        {{-- Mostrar Sweet Alert --}}
+        {{-- Mostrar Sweet Alert (Sesion vieja escuela) --}}
         @if (@session('swal'))
             <script>
                 Swal.fire(@json(session('swal')));
             </script>
-            
         @endif
+
+        {{-- SweetAlert vía Eventos Livewire --}}
+        <script>
+            document.addEventListener('livewire:initialized', () => {
+                Livewire.on('swal:success', (data) => {
+                    // data es un array o un objeto según la versión de Livewire
+                    const swalData = data[0] || data;
+
+                    Swal.fire({
+                        icon: swalData.icon,
+                        title: swalData.title,
+                        text: swalData.text,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: true
+                    }).then((result) => {
+                        // Después de mostrar la alerta, redirigimos como antes
+                        window.location.href = "{{ route('admin.appointments.index') }}";
+                    });
+                });
+            });
+        </script>
 
         <script>
             //Buscaar todos los elementos de una clase especifica

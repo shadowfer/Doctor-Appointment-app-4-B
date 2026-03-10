@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Doctor extends Model
 {
     protected $fillable = [
+        'user_id',
         'speciality_id',
         'medical_license_number',
         'biography',
@@ -22,5 +23,17 @@ class Doctor extends Model
     public function speciality()
     {
         return $this->belongsTo(Speciality::class);
+    }
+
+    // Relacion uno a muchos con horarios
+    public function schedules()
+    {
+        return $this->hasMany(DoctorSchedule::class);
+    }
+
+    // Relacion uno a muchos con citas
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
     }
 }

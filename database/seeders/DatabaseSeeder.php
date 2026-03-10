@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             SpecialitySeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
-            
+            DemoSeeder::class, // <-- Nuevo seeder para datos de prueba
         ]);
     }
 }

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Patient extends Model
 {
     protected $fillable = [
+        'user_id',
+        'blood_type_id',
         'allergies',
         'chronic_conditions',
         'surgical_history',
@@ -28,5 +30,11 @@ class Patient extends Model
     public function bloodType()
     {
         return $this->belongsTo(BloodType::class);
+    }
+
+    // Relacion uno a muchos con citas
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
     }
 }
