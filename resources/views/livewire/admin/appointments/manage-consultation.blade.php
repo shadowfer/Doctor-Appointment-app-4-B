@@ -16,7 +16,7 @@
                 <button type="button" wire:click="toggleHistoryModal" class="text-indigo-600 bg-indigo-50 hover:bg-indigo-100 font-medium rounded-lg text-sm px-4 py-2 text-center transition-colors">
                     <i class="fa-solid fa-file-medical mr-1"></i> Ver Historia
                 </button>
-                <button type="button" class="text-indigo-600 bg-indigo-50 hover:bg-indigo-100 font-medium rounded-lg text-sm px-4 py-2 text-center transition-colors">
+                <button type="button" wire:click="toggleHistoryConsultationsModal" class="text-indigo-600 bg-indigo-50 hover:bg-indigo-100 font-medium rounded-lg text-sm px-4 py-2 text-center transition-colors">
                     <i class="fa-solid fa-clock-rotate-left mr-1"></i> Consultas Anteriores
                 </button>
             </div>
@@ -62,6 +62,95 @@
                     <a href="{{ route('admin.patients.edit', $appointment->patient_id) }}" class="text-indigo-600 hover:underline text-sm font-medium">
                         Ver / Editar Historia Médica
                     </a>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Modal de Consultas Anteriores -->
+    @if($showHistoryConsultationsModal)
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden transition-all transform animate-fade-in-down flex flex-col">
+                <!-- Header del Modal -->
+                <div class="flex items-center justify-between p-4 border-b border-gray-200 bg-white sticky top-0 z-10">
+                    <h3 class="text-xl font-bold text-gray-900">Historial de Consultas Médicas</h3>
+                    <button wire:click="toggleHistoryConsultationsModal" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                
+                <!-- Cuerpo del Modal (Scrollable) -->
+                <div class="p-6 overflow-y-auto flex-grow space-y-8 bg-gray-50">
+                    @forelse($this->previousAppointments as $prevApp)
+                        <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-5 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-1 h-full bg-indigo-500"></div>
+                            
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Cita #{{ $prevApp->id }}</span>
+                                    <h4 class="text-lg font-bold text-gray-900">
+                                        {{ \Carbon\Carbon::parse($prevApp->date)->translatedFormat('d \d\e F, Y') }}
+                                    </h4>
+                                    <p class="text-sm text-gray-500">Doctor: {{ $prevApp->doctor->user->name }} ({{ $prevApp->doctor->speciality->name }})</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full border border-green-200">Completada</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                                <!-- Diagnóstico y Tratamiento -->
+                                <div class="space-y-4">
+                                    <div>
+                                        <h5 class="text-xs font-bold text-gray-400 uppercase">Diagnóstico</h5>
+                                        <p class="text-sm text-gray-700 mt-1 leading-relaxed">
+                                            {{ $prevApp->consultation->diagnosis ?? 'Sin diagnóstico registrado' }}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-bold text-gray-400 uppercase">Tratamiento</h5>
+                                        <p class="text-sm text-gray-700 mt-1 leading-relaxed">
+                                            {{ $prevApp->consultation->treatment ?? 'Sin tratamiento registrado' }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Receta -->
+                                <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                    <h5 class="text-xs font-bold text-gray-500 uppercase flex items-center">
+                                        <i class="fa-solid fa-prescription mr-2"></i> Receta Médica
+                                    </h5>
+                                    @if(isset($prevApp->consultation) && $prevApp->consultation->prescriptions->count() > 0)
+                                        <ul class="mt-3 space-y-3">
+                                            @foreach($prevApp->consultation->prescriptions as $p)
+                                                <li class="text-sm flex flex-col border-b border-gray-200 pb-2 last:border-0 last:pb-0">
+                                                    <span class="font-bold text-gray-800">{{ $p->medication }}</span>
+                                                    <span class="text-xs text-gray-500">{{ $p->dose }} - {{ $p->frequency }}</span>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <p class="text-sm text-gray-400 italic mt-3">No se emitieron recetas en esta consulta.</p>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-12">
+                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
+                                <i class="fa-solid fa-folder-open text-2xl"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900">Sin consultas previas</h3>
+                            <p class="text-gray-500">No se encontraron registros de citas completadas anteriormente para este paciente.</p>
+                        </div>
+                    @endforelse
+                </div>
+
+                <!-- Footer del Modal -->
+                <div class="flex items-center justify-end p-4 border-t border-gray-200 bg-white sticky bottom-0 z-10">
+                    <button wire:click="toggleHistoryConsultationsModal" class="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Cerrar Historial
+                    </button>
                 </div>
             </div>
         </div>

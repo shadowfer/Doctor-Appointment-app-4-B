@@ -13,6 +13,7 @@ class ManageConsultation extends Component
     public Consultation $consultation;
     public $activeTab = 'consulta';
     public bool $showHistoryModal = false;
+    public bool $showHistoryConsultationsModal = false;
     
     // Consulta
     public $diagnosis = '';
@@ -38,9 +39,24 @@ class ManageConsultation extends Component
         $this->notes = $this->consultation->notes;
     }
 
+    public function getPreviousAppointmentsProperty()
+    {
+        return Appointment::where('patient_id', $this->appointment->patient_id)
+            ->where('id', '!=', $this->appointment->id)
+            ->where('status', 2) // Solo completadas
+            ->with(['doctor.user', 'consultation.prescriptions'])
+            ->orderBy('date', 'desc')
+            ->get();
+    }
+
     public function toggleHistoryModal()
     {
         $this->showHistoryModal = !$this->showHistoryModal;
+    }
+
+    public function toggleHistoryConsultationsModal()
+    {
+        $this->showHistoryConsultationsModal = !$this->showHistoryConsultationsModal;
     }
 
     public function setTab($tab)
