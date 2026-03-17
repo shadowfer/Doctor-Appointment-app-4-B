@@ -28,6 +28,12 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Build assets
+        run: npm run build
+
       - name: Run Tests
         env:
           DB_CONNECTION: sqlite
