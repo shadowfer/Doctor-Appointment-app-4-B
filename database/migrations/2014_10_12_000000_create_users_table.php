@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
 
             // Campos adicionales
-            $table->string('id_number')->unique();
+            $table->string('id_number')->unique()->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             
