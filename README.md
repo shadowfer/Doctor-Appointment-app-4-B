@@ -9,8 +9,6 @@
 
 ## Cambios realizados
 
-PRUEBAS
-
 ### 1. Configuración de idioma
 
 - Se instaló el paquete de localización `laravel-lang/common` mediante Composer.

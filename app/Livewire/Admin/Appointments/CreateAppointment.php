@@ -109,7 +109,7 @@ class CreateAppointment extends Component
         }
 
         // Insertar en la BD
-        Appointment::create([
+        $appointment = Appointment::create([
             'patient_id' => $this->patient_id,
             'doctor_id' => $this->selectedDoctor->id,
             'date' => $this->date,
@@ -119,6 +119,9 @@ class CreateAppointment extends Component
             'status' => 1, // programado
             'reason' => $this->reason,
         ]);
+
+        // Enviar WhatsApp en segundo plano
+        \App\Jobs\SendWhatsAppConfirmation::dispatch($appointment);
 
         // Redirigir al listado con mensaje de éxito (Requisito estricto escolar)
         session()->flash('success', 'La cita médica ha sido programada con éxito.');
