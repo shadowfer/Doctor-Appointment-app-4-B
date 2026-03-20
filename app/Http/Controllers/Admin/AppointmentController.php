@@ -8,6 +8,7 @@ use App\Models\Patient;
 use App\Models\Speciality;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Jobs\SendWhatsAppConfirmation;
 
 class AppointmentController extends Controller
 {
@@ -61,12 +62,14 @@ class AppointmentController extends Controller
             return back()->withInput()->with('error', 'El doctor ya tiene una cita programada en ese horario.');
         }
 
-        Appointment::create($data);
+        $appointment = Appointment::create($data);
+        SendWhatsAppConfirmation::dispatch($appointment);
 
         session()->flash('swal', [
             'icon' => 'success',
             'title' => 'Cita creada',
             'text' => 'La cita se ha programado correctamente.',
+            
         ]);
 
         return redirect()->route('admin.appointments.index');
@@ -104,12 +107,13 @@ class AppointmentController extends Controller
             'date' => 'required|date',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
-            'status' => 'required|in:programado,completado,cancelado',
+            'status' => 'required|integer|in:1,2,3',
             'notes' => 'nullable|string|max:1000',
         ]);
 
         // Verificar conflictos excluyendo la propia cita
-        if ($data['status'] === 'programado') {
+        // 1 significa 'programado' en esta base de datos
+        if ((int)$data['status'] === 1) {
             $conflict = Appointment::where('doctor_id', $data['doctor_id'])
                 ->where('date', $data['date'])
                 ->where('id', '!=', $appointment->id)

@@ -75,9 +75,9 @@
             <div class="mb-4">
                 {{-- Estado --}}
                 <x-wire-native-select label="Estado de la Cita" name="status" required>
-                    <option value="programado" @selected(old('status', $appointment->status) == 'programado')>Programado</option>
-                    <option value="completado" @selected(old('status', $appointment->status) == 'completado')>Completado</option>
-                    <option value="cancelado" @selected(old('status', $appointment->status) == 'cancelado')>Cancelado</option>
+                    <option value="1" @selected(old('status', $appointment->status) == 1)>Programado</option>
+                    <option value="2" @selected(old('status', $appointment->status) == 2)>Completado</option>
+                    <option value="3" @selected(old('status', $appointment->status) == 3)>Cancelado</option>
                 </x-wire-native-select>
             </div>
 
