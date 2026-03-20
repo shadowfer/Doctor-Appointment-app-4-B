@@ -39,10 +39,8 @@ class SendWhatsAppConfirmation implements ShouldQueue
             return;
         }
 
-        // Asegurar que el teléfono tenga el '+' al principio requerido por Twilio
-        if (strpos($phoneNumber, '+') !== 0) {
-            $phoneNumber = '+' . ltrim($phoneNumber, '0');
-        }
+        // Limpiar el número de teléfono para CallMeBot (solo números, con código de país)
+        $phoneNumber = preg_replace('/[^0-9]/', '', $phoneNumber);
 
         // Se basa en los atributos date y start_time de la migración de Appointment
         $date = \Carbon\Carbon::parse($this->appointment->date)->format('d/m/Y');

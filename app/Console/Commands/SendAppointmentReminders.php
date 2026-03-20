@@ -49,10 +49,8 @@ class SendAppointmentReminders extends Command
             $phoneNumber = $appointment->patient->user->phone ?? null;
             
             if ($phoneNumber) {
-                // Asegurar que el teléfono tenga el '+' al principio requerido por Twilio
-                if (strpos($phoneNumber, '+') !== 0) {
-                    $phoneNumber = '+' . ltrim($phoneNumber, '0');
-                }
+                // Limpiar el número de teléfono para CallMeBot (solo números, con código de país)
+                $phoneNumber = preg_replace('/[^0-9]/', '', $phoneNumber);
 
                 // Formateamos la hora asegurando que es leída correctamente
                 $time = Carbon::parse($appointment->start_time)->format('H:i');

@@ -2,62 +2,63 @@
 
 namespace App\Services;
 
-use Twilio\Rest\Client;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class WhatsAppService
 {
-    protected $client;
-    protected $from;
+    protected $idInstance;
+    protected $apiToken;
+    protected $apiUrl;
 
     public function __construct()
     {
-        $sid = env('TWILIO_SID');
-        $token = env('TWILIO_AUTH_TOKEN');
-        $this->from = env('TWILIO_WHATSAPP_FROM');
-
-        if ($sid && $token) {
-            // En entorno local (Windows), desactivamos la verificación SSL de cURL.
-            if (app()->environment('local')) {
-                $httpClient = new \Twilio\Http\CurlClient([
-                    CURLOPT_SSL_VERIFYPEER => false,
-                    CURLOPT_SSL_VERIFYHOST => false,
-                ]);
-                $this->client = new Client($sid, $token, null, null, $httpClient);
-            } else {
-                $this->client = new Client($sid, $token);
-            }
-        }
+        $this->idInstance = env('GREEN_API_ID_INSTANCE');
+        $this->apiToken = env('GREEN_API_TOKEN_INSTANCE');
+        $this->apiUrl = rtrim(env('GREEN_API_URL', 'https://api.green-api.com'), '/');
     }
 
     /**
-     * Envía un mensaje de WhatsApp.
+     * Envía un mensaje de WhatsApp usando Green API.
      *
-     * @param string $to Número de destino (ej. +521234567890)
+     * @param string $to Número de destino (ej. 521234567890)
      * @param string $message Mensaje a enviar
      * @return bool
      */
     public function sendMessage(string $to, string $message): bool
     {
-        if (!$this->client || !$this->from) {
-            Log::warning('Twilio Credentials are not set properly.');
+        if (!$this->idInstance || !$this->apiToken) {
+            Log::warning('Green API Credentials are not set.');
             return false;
         }
 
-        // Limpiar espacios y asegurar formato para Twilio
-        $to = str_replace(' ', '', $to);
+        // Limpiar para Green API (solo números)
+        $to = preg_replace('/[^0-9]/', '', $to);
+        // Green API requiere el formato de número seguido de @c.us
+        $chatId = $to . '@c.us';
         
         try {
-            $this->client->messages->create(
-                "whatsapp:" . $to,
-                [
-                    'from' => "whatsapp:" . $this->from,
-                    'body' => $message
-                ]
-            );
-            return true;
+            $url = "{$this->apiUrl}/waInstance{$this->idInstance}/sendMessage/{$this->apiToken}";
+            
+            $http = Http::asJson();
+            // En entorno local (Windows), desactivamos la verificación SSL de cURL
+            if (app()->environment('local')) {
+                $http = $http->withoutVerifying();
+            }
+
+            $response = $http->post($url, [
+                'chatId' => $chatId,
+                'message' => $message,
+            ]);
+
+            if ($response->successful()) {
+                 return true;
+            }
+            
+            Log::error('Green API Error: ' . $response->body());
+            return false;
         } catch (\Exception $e) {
-            Log::error('Error sending WhatsApp message: ' . $e->getMessage());
+            Log::error('Error sending WhatsApp message via Green API: ' . $e->getMessage());
             return false;
         }
     }

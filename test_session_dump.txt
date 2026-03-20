@@ -1,0 +1,74 @@
+﻿array:2 [
+  "_token" => "LAdRDlHfsMbDU3KugsQpOQXNu4lPSZiiUxTbmVJV"
+  "_flash" => array:2 [
+    "old" => []
+    "new" => []
+  ]
+] // C:\Users\ferne\Laravel_Proyectos\Doctor-Appointment-app-4-B\vendor\laravel\framework\src\Illuminate\Testing\TestResponse.php:1839
+
+   FAIL  Tests\Feature\PasswordResetTest
+  Ô£ô reset password link screen canÔÇª  18.79s  
+  Ô¿» reset password link can be requÔÇª 18.68s  
+  Ô¿» reset password screen can be renÔÇª 1.22s  
+  Ô¿» password can be reset with validÔÇª 1.22s  
+  ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ  
+   FAILED  Tests\Feature\PasswordResetTesÔÇª   
+  The expected [Illuminate\Auth\Notifications\ResetPassword] notification was not sent.
+Failed asserting that false is true.
+
+  at vendor\laravel\framework\src\Illuminate\Support\Testing\Fakes\NotificationFake.php:89
+     85Ôûò         if (is_numeric($callback)) {
+     86Ôûò             return $this->assertSentToTimes($notifiable, $notification, $callback);
+     87Ôûò         }
+     88Ôûò 
+  Ô×£  89Ôûò         PHPUnit::assertTrue(
+     90Ôûò             $this->sent($notifiable, $notification, $callback)->count() > 0,
+     91Ôûò             "The expected [{$notification}] notification was not sent."
+     92Ôûò         );
+     93Ôûò     }
+
+  1   vendor\laravel\framework\src\Illuminate\Support\Testing\Fakes\NotificationFake.php:89
+  2   vendor\laravel\framework\src\Illuminate\Support\Facades\Facade.php:363
+
+  ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ  
+   FAILED  Tests\Feature\PasswordResetTesÔÇª   
+  The expected [Illuminate\Auth\Notifications\ResetPassword] notification was not sent.
+Failed asserting that false is true.
+
+  at vendor\laravel\framework\src\Illuminate\Support\Testing\Fakes\NotificationFake.php:89
+     85Ôûò         if (is_numeric($callback)) {
+     86Ôûò             return $this->assertSentToTimes($notifiable, $notification, $callback);
+     87Ôûò         }
+     88Ôûò 
+  Ô×£  89Ôûò         PHPUnit::assertTrue(
+     90Ôûò             $this->sent($notifiable, $notification, $callback)->count() > 0,
+     91Ôûò             "The expected [{$notification}] notification was not sent."
+     92Ôûò         );
+     93Ôûò     }
+
+  1   vendor\laravel\framework\src\Illuminate\Support\Testing\Fakes\NotificationFake.php:89
+  2   vendor\laravel\framework\src\Illuminate\Support\Facades\Facade.php:363
+
+  ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ  
+   FAILED  Tests\Feature\PasswordResetTesÔÇª   
+  The expected [Illuminate\Auth\Notifications\ResetPassword] notification was not sent.
+Failed asserting that false is true.
+
+  at vendor\laravel\framework\src\Illuminate\Support\Testing\Fakes\NotificationFake.php:89
+     85Ôûò         if (is_numeric($callback)) {
+     86Ôûò             return $this->assertSentToTimes($notifiable, $notification, $callback);
+     87Ôûò         }
+     88Ôûò 
+  Ô×£  89Ôûò         PHPUnit::assertTrue(
+     90Ôûò             $this->sent($notifiable, $notification, $callback)->count() > 0,
+     91Ôûò             "The expected [{$notification}] notification was not sent."
+     92Ôûò         );
+     93Ôûò     }
+
+  1   vendor\laravel\framework\src\Illuminate\Support\Testing\Fakes\NotificationFake.php:89
+  2   vendor\laravel\framework\src\Illuminate\Support\Facades\Facade.php:363
+
+
+  Tests:    3 failed, 1 passed (4 assertions)
+  Duration: 42.04s
+
