@@ -123,6 +123,21 @@ class CreateAppointment extends Component
         // Enviar WhatsApp en segundo plano
         \App\Jobs\SendWhatsAppConfirmation::dispatch($appointment);
 
+        // Enviar comprobante PDF por correo al paciente y al doctor (personalizado)
+        $appointment->load(['patient.user', 'doctor.user', 'doctor.speciality']);
+
+        $patientEmail = $appointment->patient->user->email ?? null;
+        $doctorEmail = $appointment->doctor->user->email ?? null;
+
+        if ($patientEmail) {
+            \Illuminate\Support\Facades\Mail::to($patientEmail)
+                ->send(new \App\Mail\AppointmentReceiptMail($appointment, 'patient'));
+        }
+        if ($doctorEmail) {
+            \Illuminate\Support\Facades\Mail::to($doctorEmail)
+                ->send(new \App\Mail\AppointmentReceiptMail($appointment, 'doctor'));
+        }
+
         // Redirigir al listado con mensaje de éxito (Requisito estricto escolar)
         session()->flash('success', 'La cita médica ha sido programada con éxito.');
         return redirect()->route('admin.appointments.index');
