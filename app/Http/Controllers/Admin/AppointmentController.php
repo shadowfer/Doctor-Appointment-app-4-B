@@ -65,6 +65,21 @@ class AppointmentController extends Controller
         $appointment = Appointment::create($data);
         SendWhatsAppConfirmation::dispatch($appointment);
 
+        // Enviar comprobante PDF por correo al paciente y al doctor (personalizado)
+        $appointment->load(['patient.user', 'doctor.user', 'doctor.speciality']);
+
+        $patientEmail = $appointment->patient->user->email ?? null;
+        $doctorEmail = $appointment->doctor->user->email ?? null;
+
+        if ($patientEmail) {
+            \Illuminate\Support\Facades\Mail::to($patientEmail)
+                ->send(new \App\Mail\AppointmentReceiptMail($appointment, 'patient'));
+        }
+        if ($doctorEmail) {
+            \Illuminate\Support\Facades\Mail::to($doctorEmail)
+                ->send(new \App\Mail\AppointmentReceiptMail($appointment, 'doctor'));
+        }
+
         session()->flash('swal', [
             'icon' => 'success',
             'title' => 'Cita creada',
